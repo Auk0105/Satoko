@@ -26,11 +26,11 @@ int main() {
 			case RX_16_IO_RESPONSE:
 				xbee.getResponse().getRx16IoSampleResponse(io_sample);
 
-				sw1 = !io_sample.isDigitalOn(0,0);
-				sw2 = !io_sample.isDigitalOn(1,0);
+				sw1 = !io_sample.isDigitalOn(2,0);
+				sw2 = !io_sample.isDigitalOn(3,0);
 
-				analogX = io_sample.getAnalog(2,0) - 512;
-				analogY = io_sample.getAnalog(3,0) - 512;
+				analogX = io_sample.getAnalog(0,0) - 512;
+				analogY = io_sample.getAnalog(1,0) - 512;
 
 				analogX = (-ANALOG_OFFSET < analogX && analogX < ANALOG_OFFSET) ? 0 : analogX;
 				analogY = (-ANALOG_OFFSET < analogY && analogY < ANALOG_OFFSET) ? 0 : analogY;
