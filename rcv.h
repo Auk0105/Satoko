@@ -11,7 +11,7 @@
 #endif
 
 #define Duty 0.5
-#define RotaGain 1.0
+#define RotaGain 0.3
 #define SlowGain 0.5
 #define MAX_xy 512
 
