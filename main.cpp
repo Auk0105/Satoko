@@ -17,30 +17,34 @@ int main() {
 
 	Rx16IoSampleResponse io_sample = Rx16IoSampleResponse();
 
-	while(1){
+	while (1) {
 		bool sw1, sw2;
 		int analogX, analogY;
 
-		if(xbee.readPacket(100)){
-			switch(xbee.getResponse().getApiId()){
+		if (xbee.readPacket(100)) {
+			switch (xbee.getResponse().getApiId()) {
 			case RX_16_IO_RESPONSE:
 				xbee.getResponse().getRx16IoSampleResponse(io_sample);
 
-				sw1 = !io_sample.isDigitalOn(2,0);
-				sw2 = !io_sample.isDigitalOn(3,0);
+				sw1 = !io_sample.isDigitalOn(2, 0);
+				sw2 = !io_sample.isDigitalOn(3, 0);
 
-				analogX = io_sample.getAnalog(0,0) - 512;
-				analogY = io_sample.getAnalog(1,0) - 512;
+				analogX = io_sample.getAnalog(0, 0) - 512;
+				analogY = io_sample.getAnalog(1, 0) - 512;
 
-				analogX = (-ANALOG_OFFSET < analogX && analogX < ANALOG_OFFSET) ? 0 : analogX;
-				analogY = (-ANALOG_OFFSET < analogY && analogY < ANALOG_OFFSET) ? 0 : analogY;
+				analogX =
+						(-ANALOG_OFFSET < analogX && analogX < ANALOG_OFFSET) ?
+								0 : analogX;
+				analogY =
+						(-ANALOG_OFFSET < analogY && analogY < ANALOG_OFFSET) ?
+								0 : analogY;
 
-				DBG("(x, y) = ( %4d, %4d), SW1 = %3s, SW2 = %3s\r\n",
-					analogX, analogY, sw1 ? "ON" : "OFF", sw2 ? "ON" : "OFF");
+				DBG("(x, y) = ( %4d, %4d), SW1 = %3s, SW2 = %3s\r\n", analogX,
+						analogY, sw1 ? "ON" : "OFF", sw2 ? "ON" : "OFF");
 				break;
 			}
-		}else{
-			switch(xbee.getResponse().getErrorCode()){
+		} else {
+			switch (xbee.getResponse().getErrorCode()) {
 			case NO_ERROR:
 				DBG("Error : TIMEOUT\r\n");
 				break;
