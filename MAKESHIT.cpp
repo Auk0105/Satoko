@@ -8,26 +8,18 @@ MAKESHIT::MAKESHIT( PinName ping,PinName elpwm,PinName eldir,PinName hand,PinNam
                     : _ping(ping),_el(elpwm,eldir),_hand(hand),_belt(belt),_sw1(sw1),_sw2(sw2),_sw3(sw3),_charge(cha),_CHA(cha)
 {
     _ance = 0;
-    hirai = 0x0000;
+    hirai = 0x8000;
 
     _sw1.rise(this,&MAKESHIT::top);
     _sw2.rise(this,&MAKESHIT::middle);
     _sw3.rise(this,&MAKESHIT::bottom);
     _charge.rise(this,&MAKESHIT::grasp);
-    _sn.attach(this,&MAKESHIT::sonner,0.1);
     _hand.deg(0);
 
 }
+
 void MAKESHIT::boom(void)
 {
-    if(!((hirai>>10)&1)) {//cath0;
-        hirai |= 0x8000;//sone1
-    }
-}
-
-void MAKESHIT::sonner(void)
-{
-
     if((hirai>>15) & 1) { //sone1
         _ping.output();
         _ping = 1;
@@ -54,7 +46,7 @@ void MAKESHIT::sonner(void)
 
         if((hirai>>9) & 1) {//exam
             if(_cabal.read() > hold) {
-                hirai |= 0x0400;//cath1
+                //hirai |= 0x0400;//cath1
                 hirai &= 0x7FFF;//sone0
                 hirai &= 0xFDFF;//exam0
                 _cabal.stop();
@@ -72,8 +64,8 @@ void MAKESHIT::top(void)
     if((hirai>>13) & 1) {//midm1
         hirai &=0xDFFF;//midm0
         _el.rotate(0);
-        hirai &= 0xFBFF;//cath0
-        //hirai |= 0x8000;//sone1
+        //hirai &= 0xFBFF;//cath0
+        hirai |= 0x8000;//sone1
     }
 }
 
@@ -102,17 +94,17 @@ void MAKESHIT::bottom()
 void MAKESHIT::belser()
 {
     _belt = 0;
-    if(!((hirai>>7)&1)) {
+    //if(!((hirai>>7)&1)) {
         _hand.deg(open);
-        hirai |=0x0080;
-    }
+        //hirai |=0x0080;
+    //}
     _el.rotate(-0.9);
     hirai |=0x2000;//midm1
 }
 
 void MAKESHIT::grasp()
 {
-    wait_ms(20);
+    wait_ms(50);
     if(_CHA) {
         hirai = hirai^0x0040;
         if(((hirai>>6)&1)) {
