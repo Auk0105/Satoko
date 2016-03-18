@@ -7,10 +7,9 @@
 
 #define temp 18.0
 #define hold 2.0
-#define DT 5.0
-#define open 80
+#define DT 3.0
+#define open 90
 #define close 0
-
 
 class MAKESHIT{
     public:
@@ -28,13 +27,14 @@ class MAKESHIT{
     InterruptIn _charge;
     DigitalIn _CHA;
 
+    void sonner(void);
     void top(void);
     void middle(void);
     void bottom(void);
     void belser(void);
     void grasp(void);
 
-
+    Ticker _sn;
     Timer _dist;
     Timer _cabal;
     Timeout _beltstop;
