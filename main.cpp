@@ -1,16 +1,14 @@
 #include "mbed.h"
 #include "XBee.h"
-#include "rcv.h"
-
-#define Duty 0.5
+#include "Quadroped.h"
 
 #define DBG(...) printf(__VA_ARGS__)
 
 #define ANALOG_OFFSET 20
 
-XBee xbee(p28, p27);
+XBee xbee(p9, p10);
 
-//DigitalOut led1(LED1), led2(LED2), led3(LED3), led4(LED4);
+DigitalOut led1(LED1), led2(LED2), led3(LED3), led4(LED4);
 
 int main() {
 	xbee.begin(57600);
@@ -26,8 +24,8 @@ int main() {
 			case RX_16_IO_RESPONSE:
 				xbee.getResponse().getRx16IoSampleResponse(io_sample);
 
-				sw1 = !io_sample.isDigitalOn(2, 0);
-				sw2 = !io_sample.isDigitalOn(3, 0);
+				led1 = sw1 = !io_sample.isDigitalOn(2, 0);
+				led2 = sw2 = !io_sample.isDigitalOn(3, 0);
 
 				analogX = io_sample.getAnalog(0, 0) - 512;
 				analogY = io_sample.getAnalog(1, 0) - 512;
@@ -68,6 +66,6 @@ int main() {
 			analogY = 0;
 		}
 
-		Drive(analogX, analogY, sw1, sw2);
+		Walk(analogX, analogY, sw1, sw2);
 	}
 }
